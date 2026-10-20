@@ -48,4 +48,30 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 exception.getMessage()
         );
     }
+
+    /**
+     * Reports that the requested fee-rule version does not exist.
+     */
+    @ExceptionHandler(FeeRuleNotFoundException.class)
+    public ProblemDetail handleFeeRuleNotFound(
+            FeeRuleNotFoundException exception) {
+
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage()
+        );
+    }
+
+    /**
+     * Reports a duplicate active rule or an invalid version change.
+     */
+    @ExceptionHandler(FeeRuleConflictException.class)
+    public ProblemDetail handleFeeRuleConflict(
+            FeeRuleConflictException exception) {
+
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                exception.getMessage()
+        );
+    }
 }
