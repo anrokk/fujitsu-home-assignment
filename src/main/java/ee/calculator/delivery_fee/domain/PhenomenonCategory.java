@@ -2,7 +2,7 @@ package ee.calculator.delivery_fee.domain;
 
 public enum PhenomenonCategory {
     SNOW,
-    FLEET,
+    SLEET,
     RAIN,
     GLAZE,
     HAIL,
