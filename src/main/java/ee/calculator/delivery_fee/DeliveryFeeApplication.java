@@ -11,6 +11,9 @@ import java.time.Clock;
 @EnableScheduling
 public class DeliveryFeeApplication {
 
+	/**
+	 * Starts the delivery fee application.
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(DeliveryFeeApplication.class, args);
 	}

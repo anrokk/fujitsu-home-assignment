@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public interface RegionalBaseFeeRepository
         extends JpaRepository<RegionalBaseFee, Long> {
+    /**
+     * Finds the city and vehicle's base fee valid at the requested time.
+     * The start time is inclusive and the end time is exclusive.
+     */
     @Query("""
             SELECT fee
             FROM RegionalBaseFee fee

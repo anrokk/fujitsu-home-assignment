@@ -22,6 +22,9 @@ public class DeliveryFeeController {
     private final DeliveryFeeService service;
     private final Clock clock;
 
+    /**
+     * Calculates the delivery fee at the supplied datetime, or now if omitted.
+     */
     @GetMapping
     public DeliveryFeeResponse calculate(
             @RequestParam("city") City city,

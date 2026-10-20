@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 public class WeatherImportScheduler {
     private final WeatherImportService service;
 
+    /**
+     * Imports weather observations on the configured schedule.
+     */
     @Scheduled(
             cron = "${weather.import.cron}",
             zone = "${weather.import.zone}"

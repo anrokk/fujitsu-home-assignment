@@ -19,6 +19,12 @@ public class PhenomenonFeeService {
     private final PhenomenonFeeRuleRepository repository;
     private final PhenomenonClassifier classifier;
 
+    /**
+     * Classifies the phenomenon and returns its surcharge at the requested time,
+     * or zero when no rule applies.
+     *
+     * @throws VehicleForbiddenException if the matching rule prohibits the vehicle
+     */
     @Transactional(readOnly = true)
     public BigDecimal getAmount(
             VehicleType vehicleType,

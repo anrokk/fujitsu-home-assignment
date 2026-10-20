@@ -9,6 +9,10 @@ import java.util.Locale;
 @Component
 public class PhenomenonClassifier {
 
+    /**
+     * Maps a weather description to a fee category, ignoring case.
+     * Null, blank, and unrecognized descriptions map to OTHER.
+     */
     public PhenomenonCategory classify(String phenomenon) {
         if (phenomenon == null) {
             return PhenomenonCategory.OTHER;

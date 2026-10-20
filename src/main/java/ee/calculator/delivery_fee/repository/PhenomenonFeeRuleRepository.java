@@ -11,6 +11,9 @@ import java.time.Instant;
 import java.util.Optional;
 
 public interface PhenomenonFeeRuleRepository extends JpaRepository<PhenomenonFeeRule, Long> {
+    /**
+     * Finds a rule matching the vehicle, phenomenon category, and requested time.
+     */
     @Query("""
             SELECT rule
             FROM PhenomenonFeeRule rule

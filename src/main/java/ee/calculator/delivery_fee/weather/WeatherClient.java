@@ -10,6 +10,9 @@ public class WeatherClient {
     private final RestClient restClient;
     private final String observationsUrl;
 
+    /**
+     * Creates a client for the configured weather observations URL.
+     */
     public WeatherClient(
             RestClient.Builder builder,
             @Value("${weather.observations-url}") String observationsUrl) {
@@ -17,6 +20,11 @@ public class WeatherClient {
         this.observationsUrl = observationsUrl;
     }
 
+    /**
+     * Fetches the current weather observations as XML.
+     *
+     * @throws IllegalStateException if the weather service returns an empty response
+     */
     public String fetchObservations() {
         String xml = restClient.get()
                 .uri(observationsUrl)

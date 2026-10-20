@@ -11,6 +11,9 @@ import java.time.Instant;
 import java.util.Optional;
 
 public interface WindFeeRuleRepository extends JpaRepository<WindFeeRule, Long> {
+    /**
+     * Finds a rule matching the vehicle, wind-speed bounds, and requested time.
+     */
     @Query("""
             SELECT rule
             FROM WindFeeRule rule

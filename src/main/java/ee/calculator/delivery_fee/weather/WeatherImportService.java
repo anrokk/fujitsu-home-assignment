@@ -16,6 +16,9 @@ public class WeatherImportService {
     private final WeatherObservationRepository repository;
 
 
+    /**
+     * Fetches and stores new observations without overwriting weather history.
+     */
     public void importObservations() {
         String xml = client.fetchObservations();
 

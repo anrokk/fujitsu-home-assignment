@@ -21,6 +21,12 @@ import java.util.List;
 
 @Component
 public class WeatherXmlParser {
+    /**
+     * Extracts observations for Tallinn-Harku, Tartu-Tõravere, and Pärnu.
+     * Missing numeric measurements are stored as null.
+     *
+     * @throws IllegalArgumentException if the XML or a numeric value is invalid
+     */
     public List<WeatherObservation> parse(String xml) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

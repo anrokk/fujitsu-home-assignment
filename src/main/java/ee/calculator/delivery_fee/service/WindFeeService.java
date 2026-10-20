@@ -17,6 +17,12 @@ public class WindFeeService {
 
     private final WindFeeRuleRepository repository;
 
+    /**
+     * Returns the wind surcharge valid at the requested time,
+     * or zero when no rule applies.
+     *
+     * @throws VehicleForbiddenException if the matching rule prohibits the vehicle
+     */
     @Transactional(readOnly = true)
     public BigDecimal getAmount(
             VehicleType vehicleType,

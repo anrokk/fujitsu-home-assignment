@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public interface TemperatureFeeRuleRepository extends JpaRepository<TemperatureFeeRule, Long> {
 
+    /**
+     * Finds a rule matching the vehicle, temperature bounds, and requested time.
+     */
     @Query("""
             SELECT rule
             FROM TemperatureFeeRule rule

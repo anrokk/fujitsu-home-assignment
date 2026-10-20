@@ -17,6 +17,10 @@ public class TemperatureFeeService {
     private final TemperatureFeeRuleRepository repository;
 
 
+    /**
+     * Returns the temperature surcharge valid at the requested time,
+     * or zero when no rule applies.
+     */
     @Transactional(readOnly = true)
     public BigDecimal getAmount(
             VehicleType vehicleType,
