@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 public interface WindFeeRuleRepository extends JpaRepository<WindFeeRule, Long> {
@@ -42,4 +43,15 @@ public interface WindFeeRuleRepository extends JpaRepository<WindFeeRule, Long> 
             @Param("windSpeed") double windSpeed,
             @Param("time") Instant time
     );
+
+    /** Finds all rules for the vehicle that are valid at the requested time. */
+    @Query("""
+            SELECT rule FROM WindFeeRule rule
+            WHERE rule.vehicleType = :vehicleType
+              AND rule.validFrom <= :time
+              AND (rule.validTo IS NULL OR rule.validTo > :time)
+            """)
+    List<WindFeeRule> findActiveRules(
+            @Param("vehicleType") VehicleType vehicleType,
+            @Param("time") Instant time);
 }

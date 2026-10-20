@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 public interface TemperatureFeeRuleRepository extends JpaRepository<TemperatureFeeRule, Long> {
@@ -42,4 +43,15 @@ public interface TemperatureFeeRuleRepository extends JpaRepository<TemperatureF
             @Param("temperature") double temperature,
             @Param("time") Instant time
     );
+
+    /** Finds all rules for the vehicle that are valid at the requested time. */
+    @Query("""
+            SELECT rule FROM TemperatureFeeRule rule
+            WHERE rule.vehicleType = :vehicleType
+              AND rule.validFrom <= :time
+              AND (rule.validTo IS NULL OR rule.validTo > :time)
+            """)
+    List<TemperatureFeeRule> findActiveRules(
+            @Param("vehicleType") VehicleType vehicleType,
+            @Param("time") Instant time);
 }
