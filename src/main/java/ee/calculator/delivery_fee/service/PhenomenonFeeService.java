@@ -26,6 +26,7 @@ public class PhenomenonFeeService {
     private final PhenomenonFeeRuleRepository repository;
     private final Clock clock;
     private final PhenomenonClassifier classifier;
+    private final FeeRuleWriteLock writeLock;
 
     /**
      * Classifies the phenomenon and returns its surcharge at the requested time,
@@ -67,6 +68,7 @@ public class PhenomenonFeeService {
     /** Creates a rule effective immediately, rejecting conflicting active rules. */
     @Transactional
     public PhenomenonFeeRule create(PhenomenonFeeRuleRequest request) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         checkConflict(request, time, null);
         return saveNewRule(request, time);
@@ -75,6 +77,7 @@ public class PhenomenonFeeService {
     /** Replaces an active rule without changing historical calculations. */
     @Transactional
     public PhenomenonFeeRule update(Long id, PhenomenonFeeRuleRequest request) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         PhenomenonFeeRule existing = findEditableRule(id, time);
         checkConflict(request, time, id);
@@ -86,6 +89,7 @@ public class PhenomenonFeeService {
     /** Retires an active rule while preserving its historical version. */
     @Transactional
     public void delete(Long id) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         PhenomenonFeeRule existing = findEditableRule(id, time);
         existing.setValidTo(time);

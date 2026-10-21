@@ -24,6 +24,7 @@ public class WindFeeService {
 
     private final WindFeeRuleRepository repository;
     private final Clock clock;
+    private final FeeRuleWriteLock writeLock;
 
     /**
      * Returns the wind surcharge valid at the requested time,
@@ -62,6 +63,7 @@ public class WindFeeService {
     /** Creates a rule effective immediately, rejecting conflicting active rules. */
     @Transactional
     public WindFeeRule create(WindFeeRuleRequest request) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         checkConflict(request, time, null);
         return saveNewRule(request, time);
@@ -70,6 +72,7 @@ public class WindFeeService {
     /** Replaces an active rule without changing historical calculations. */
     @Transactional
     public WindFeeRule update(Long id, WindFeeRuleRequest request) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         WindFeeRule existing = findEditableRule(id, time);
         checkConflict(request, time, id);
@@ -81,6 +84,7 @@ public class WindFeeService {
     /** Retires an active rule while preserving its historical version. */
     @Transactional
     public void delete(Long id) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         WindFeeRule existing = findEditableRule(id, time);
         existing.setValidTo(time);

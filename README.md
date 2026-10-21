@@ -243,6 +243,9 @@ The prohibition message is:
 Regional base fees and all three weather-rule types support REST CRUD
 with historical versioning.
 
-Concurrent pricing changes are not protected against overlapping versions.
+Pricing changes lock the same database row before validating or changing rules.
+The lock is held until commit or rollback, preventing concurrent writes from
+creating overlapping versions. Pricing writes run one at a time; calculation
+requests do not acquire this lock.
 Management changes take effect immediately; scheduled and backdated changes
 are not supported.

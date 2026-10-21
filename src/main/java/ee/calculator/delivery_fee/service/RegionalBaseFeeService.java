@@ -23,6 +23,7 @@ import java.util.List;
 public class RegionalBaseFeeService {
     private final RegionalBaseFeeRepository repository;
     private final Clock clock;
+    private final FeeRuleWriteLock writeLock;
 
     /**
      * Returns the base fee applicable at the requested time for the given city and vehicle type.
@@ -69,6 +70,7 @@ public class RegionalBaseFeeService {
             VehicleType vehicleType,
             BigDecimal amount
     ) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
 
         if (repository.findApplicableFee(city, vehicleType, time).isPresent()) {
@@ -88,6 +90,7 @@ public class RegionalBaseFeeService {
      */
     @Transactional
     public RegionalBaseFee update(Long id, BigDecimal amount) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         RegionalBaseFee existingFee = findEditableFee(id, time);
 
@@ -108,6 +111,7 @@ public class RegionalBaseFeeService {
      */
     @Transactional
     public void delete(Long id) {
+        writeLock.acquire();
         Instant time = clock.instant().truncatedTo(ChronoUnit.MICROS);
         RegionalBaseFee existingFee = findEditableFee(id, time);
 
